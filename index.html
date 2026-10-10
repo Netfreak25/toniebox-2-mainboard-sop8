@@ -265,10 +265,31 @@ body.dungeon-open { overflow: hidden; }
 .dungeon-scene[data-phase="ready"] .dungeon-fire,
 .dungeon-scene[data-phase="ready"] .dungeon-elder { transition: none; }
 .dungeon-scene .dungeon-items { position: absolute; top: calc(68 * var(--pixel)); inset-inline: 0; }
-.dungeon-scene .dungeon-item { visibility: hidden; display: grid; place-items: center; margin: 0; padding: 8px; min-width: 44px; min-height: 44px; border: 0; border-radius: 0; background: transparent; cursor: pointer; }
+.dungeon-scene .dungeon-item { position: relative; visibility: hidden; display: grid; place-items: center; margin: 0; padding: 8px; min-width: 44px; min-height: 44px; border: 0; border-radius: 0; background: transparent; cursor: pointer; }
 .dungeon-scene .dungeon-item.is-visible { visibility: visible; }
 .dungeon-scene .dungeon-item:hover,
-.dungeon-scene .dungeon-item:focus-visible { color: #fff; outline: 1px solid #ffae60; outline-offset: 4px; }
+.dungeon-scene .dungeon-item:focus-visible { outline: none; }
+.dungeon-scene .dungeon-item::after {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  color: #ffd18a;
+  font: 700 9px/1.25 "Lucida Console", "Cascadia Mono", Consolas, monospace;
+  letter-spacing: .06em;
+  text-shadow: 1px 1px 0 #582a0d;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms linear;
+}
+.dungeon-scene .dungeon-item[data-device="image"]::after { content: "Load Image"; }
+.dungeon-scene .dungeon-item[data-device="flipper"]::after { content: "Flipper Zero"; }
+.dungeon-scene .dungeon-item[data-device="pico"]::after { content: "Pico"; }
+.dungeon-scene .dungeon-item[data-device="esp"]::after { content: "ESP32-C3"; }
+.dungeon-scene .dungeon-item:hover::after,
+.dungeon-scene .dungeon-item:focus-visible::after { opacity: 1; }
 .dungeon-scene .dungeon-item-art { display: flex; justify-content: center; align-items: center; height: calc(28 * var(--item-pixel)); }
 .dungeon-scene .dungeon-item-art svg { width: auto; height: auto; transform: scale(var(--sprite-scale, 3)); transform-origin: center; }
 .dungeon-scene .dungeon-image { margin-inline: auto; min-width: max(44px, calc(32 * var(--item-pixel))); }
@@ -299,7 +320,8 @@ body.dungeon-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .dungeon-scene, .dungeon-scene .dungeon-fire-strip { animation: none; }
-  .dungeon-scene .dungeon-fire, .dungeon-scene .dungeon-elder { transition: none; }
+  .dungeon-scene .dungeon-fire, .dungeon-scene .dungeon-elder,
+  .dungeon-scene .dungeon-item::after { transition: none; }
 }
 @media print {
   body.dungeon-open { overflow: visible; }
